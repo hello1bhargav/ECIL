@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ECNET Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="login-box">
+    <h2>Login</h2>
+    <form>
+      <label for="userid">User ID</label>
+      <input type="text" id="userid" name="userid" required>
+
+      <label for="pwd">Password</label>
+      <input type="password" id="pwd" name="pwd" required>
+
+      <label for="role">Select Role</label>
+      <select id="role" name="role" required>
+        <option value="" disabled selected>-- Choose Role --</option>
+        <option value="user">Normal User</option>
+        <option value="it_champion">IT Champion</option>
+        <option value="hod">HOD</option>
+      </select>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</body>
+</html>

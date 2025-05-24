@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IT Champion Checklist Form</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 20px 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2, h3 {
+            text-align: center;
+            margin: 10px 0;
+        }
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table td {
+            padding: 8px;
+            vertical-align: middle;
+        }
+        table td.label {
+            width: 50%;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .checkbox-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 20px;
+        }
+        .checkbox-list li {
+            margin: 8px 0;
+        }
+        .checkbox-list input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .send-hod {
+            margin: 20px 0;
+        }
+        .send-hod label {
+            font-weight: bold;
+        }
+        .verified-section {
+            margin: 20px 0;
+        }
+        .verified-section label {
+            display: inline-block;
+            width: 80px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .verified-section input {
+            width: 200px;
+            padding: 5px;
+        }
+        #submitBtn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        #note {
+            font-size: 0.9em;
+            font-style: italic;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>ELECTRONICS CORPORATION OF INDIA LIMITED</h2>
+        <h2>Checklist for Desktop Security Compliance</h2>
+        
+        <h3>Particulars of the Internet Connectivity Point</h3>
+        <p style="font-style: italic; font-size: 0.9em; text-align: center;">(To be filled by the IT Champion)</p>
+        <table>
+            <tr>
+                <td class="label"><label for="buildingSwitchIP">Building Switch IP Address</label></td>
+                <td><input type="text" id="buildingSwitchIP"></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="buildingSwitchPort">Building Switch Port No.</label></td>
+                <td><input type="text" id="buildingSwitchPort"></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="accessSwitchIP">Access Switch IP Address</label></td>
+                <td><input type="text" id="accessSwitchIP"></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="accessSwitchPort">Access Switch Port No.</label></td>
+                <td><input type="text" id="accessSwitchPort"></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="ioPort">I/O Port No.</label></td>
+                <td><input type="text" id="ioPort"></td>
+            </tr>
+        </table>
+        
+        <h3>Configuration Parameters</h3>
+        <ul class="checkbox-list" id="configParams">
+            <li><label><input type="checkbox" id="chkLegalOS"> Legal OS and Application Software</label></li>
+            <li>
+                <label><input type="checkbox" id="chkAntivirus"> Loaded Antivirus (Brand & Version)</label>
+                <div id="antivirusInfo" style="display: none; margin-left: 20px; margin-top: 5px;">
+                    <label for="antivirusInput">Antivirus Brand & Version:</label>
+                    <input type="text" id="antivirusInput" placeholder="e.g., XYZ Antivirus v1.2">
+                </div>
+            </li>
+            <li><label><input type="checkbox" id="chkUSB"> Installed USB Pratirodh (Controlled removable media usage)</label></li>
+            <li><label><input type="checkbox" id="chkPassword"> Strong Login Password (alphabets/numerals/special chars)</label></li>
+            <li><label><input type="checkbox" id="chkSeparate"> Separate Administrator & User accounts</label></li>
+            <li><label><input type="checkbox" id="chkRemoteDesktop"> Disabled Remote Desktop features</label></li>
+            <li><label><input type="checkbox" id="chkAutorun"> Disabled Auto-run/Auto-play features</label></li>
+            <li><label><input type="checkbox" id="chkFirewall"> Enabled Windows Firewall</label></li>
+            <li><label><input type="checkbox" id="chkFileSharing"> Turned off File & Printer sharing</label></li>
+        </ul>
+        
+        <h3>Operational Practices</h3>
+        <ul class="checkbox-list" id="operationalPractices">
+            <li><label><input type="checkbox" id="chkUpdates"> Periodic check of security updates & patches by IT Champion</label></li>
+            <li><label><input type="checkbox" id="chkNoAdmin"> Non-use of Administrator account for daily work</label></li>
+            <li><label><input type="checkbox" id="chkBackup"> Ensure weekly desktop mail backup using Outlook</label></li>
+        </ul>
+        
+        <div class="send-hod">
+            <label for="hodSelect">Send To (HOD):</label>
+            <select id="hodSelect">
+                <option value="">-- Select HOD --</option>
+                <option value="Head_IT">Head of IT</option>
+                <option value="Head_Security">Head of Security</option>
+                <option value="Head_Admin">Head of Administration</option>
+            </select>
+        </div>
+        
+        <div class="verified-section">
+            <label for="championCode">Code:</label>
+            <input type="text" id="championCode" readonly>
+            <label for="championName" style="margin-left: 20px;">Name:</label>
+            <input type="text" id="championName" readonly>
+        </div>
+        
+        <button type="submit" id="submitBtn" disabled>Submit</button>
+        
+        <p id="note">Note: The IT Champion must verify the above checklist before the submission of ECNET Application form.</p>
+        <p style="text-align: center; font-size: 0.8em; margin-top: 30px;">Information Technology Services Division, ITSD</p>
+    </div>
+    <script>
+        window.onload = function() {
+            // Autofill IT Champion code and name
+            var champCode = document.getElementById('championCode');
+            var champName = document.getElementById('championName');
+            champCode.value = 'ITC12345';
+            champName.value = 'John Doe';
+            
+            // Elements
+            var antivirusCheckbox = document.getElementById('chkAntivirus');
+            var antivirusInfo = document.getElementById('antivirusInfo');
+            var hodSelect = document.getElementById('hodSelect');
+            var submitBtn = document.getElementById('submitBtn');
+            
+            // All required checkboxes
+            var requiredCheckboxes = document.querySelectorAll('#configParams input[type="checkbox"], #operationalPractices input[type="checkbox"]');
+            
+            // Function to check if all required conditions are met
+            function updateSubmitState() {
+                var allChecked = true;
+                requiredCheckboxes.forEach(function(chk) {
+                    if (!chk.checked) {
+                        allChecked = false;
+                    }
+                });
+                var hodSelected = hodSelect.value !== '';
+                submitBtn.disabled = !(allChecked && hodSelected);
+            }
+            
+            // Antivirus checkbox listener
+            antivirusCheckbox.addEventListener('change', function() {
+                if (antivirusCheckbox.checked) {
+                    antivirusInfo.style.display = 'block';
+                } else {
+                    antivirusInfo.style.display = 'none';
+                }
+                updateSubmitState();
+            });
+            
+            // Checkbox listeners
+            requiredCheckboxes.forEach(function(chk) {
+                chk.addEventListener('change', updateSubmitState);
+            });
+            
+            // HOD dropdown listener
+            hodSelect.addEventListener('change', updateSubmitState);
+            
+            // Initial check
+            updateSubmitState();
+        };
+    </script>
+</body>
+</html>
