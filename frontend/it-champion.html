@@ -43,6 +43,16 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[readonly] {
+            background-color: #f5f5f5;
+        }
         .checkbox-list {
             list-style: none;
             padding-left: 0;
@@ -50,18 +60,35 @@
         }
         .checkbox-list li {
             margin: 8px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border-left: 4px solid #ddd;
+        }
+        .checkbox-list li.checked {
+            background-color: #e8f5e8;
+            border-left-color: #4CAF50;
         }
         .checkbox-list input[type="checkbox"] {
             margin-right: 10px;
+            transform: scale(1.2);
         }
         .send-hod {
             margin: 20px 0;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 5px;
+            border: 1px solid #b0d4f1;
         }
         .send-hod label {
             font-weight: bold;
         }
         .verified-section {
             margin: 20px 0;
+            padding: 15px;
+            background-color: #fff9f0;
+            border-radius: 5px;
+            border: 1px solid #ffcc99;
         }
         .verified-section label {
             display: inline-block;
@@ -76,14 +103,87 @@
         #submitBtn {
             display: block;
             margin: 20px auto;
-            padding: 10px 20px;
+            padding: 12px 30px;
             font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #submitBtn:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+        #submitBtn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
         }
         #note {
             font-size: 0.9em;
             font-style: italic;
             margin-top: 10px;
             text-align: center;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: none;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .antivirus-details {
+            margin-left: 30px;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-radius: 5px;
+            border: 1px solid #b0d4f1;
+            display: none;
+        }
+        .antivirus-details label {
+            font-weight: normal;
+            margin-bottom: 5px;
+        }
+        .request-info {
+            background-color: #e6f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #99ccff;
+        }
+        .request-info h4 {
+            margin-top: 0;
+            color: #0066cc;
         }
     </style>
 </head>
@@ -92,55 +192,91 @@
         <h2>ELECTRONICS CORPORATION OF INDIA LIMITED</h2>
         <h2>Checklist for Desktop Security Compliance</h2>
         
+        <div class="request-info">
+            <h4>Request Information</h4>
+            <p><strong>Request ID:</strong> <span id="requestId">Loading...</span></p>
+            <p><strong>Department:</strong> <span id="department">Loading...</span></p>
+            <p><strong>Request Date:</strong> <span id="requestDate">Loading...</span></p>
+            <p><strong>Status:</strong> <span id="requestStatus">Loading...</span></p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+        
+        <div class="status-message" id="statusMessage"></div>
+        
         <h3>Particulars of the Internet Connectivity Point</h3>
         <p style="font-style: italic; font-size: 0.9em; text-align: center;">(To be filled by the IT Champion)</p>
         <table>
             <tr>
                 <td class="label"><label for="buildingSwitchIP">Building Switch IP Address</label></td>
-                <td><input type="text" id="buildingSwitchIP"></td>
+                <td><input type="text" id="buildingSwitchIP" placeholder="e.g., 192.168.1.1"></td>
             </tr>
             <tr>
                 <td class="label"><label for="buildingSwitchPort">Building Switch Port No.</label></td>
-                <td><input type="text" id="buildingSwitchPort"></td>
+                <td><input type="text" id="buildingSwitchPort" placeholder="e.g., Port 24"></td>
             </tr>
             <tr>
                 <td class="label"><label for="accessSwitchIP">Access Switch IP Address</label></td>
-                <td><input type="text" id="accessSwitchIP"></td>
+                <td><input type="text" id="accessSwitchIP" placeholder="e.g., 192.168.2.1"></td>
             </tr>
             <tr>
                 <td class="label"><label for="accessSwitchPort">Access Switch Port No.</label></td>
-                <td><input type="text" id="accessSwitchPort"></td>
+                <td><input type="text" id="accessSwitchPort" placeholder="e.g., Port 12"></td>
             </tr>
             <tr>
                 <td class="label"><label for="ioPort">I/O Port No.</label></td>
-                <td><input type="text" id="ioPort"></td>
+                <td><input type="text" id="ioPort" placeholder="e.g., 8080"></td>
             </tr>
         </table>
         
         <h3>Configuration Parameters</h3>
         <ul class="checkbox-list" id="configParams">
-            <li><label><input type="checkbox" id="chkLegalOS"> Legal OS and Application Software</label></li>
+            <li>
+                <label><input type="checkbox" id="chkLegalOS"> Legal OS and Application Software</label>
+            </li>
             <li>
                 <label><input type="checkbox" id="chkAntivirus"> Loaded Antivirus (Brand & Version)</label>
-                <div id="antivirusInfo" style="display: none; margin-left: 20px; margin-top: 5px;">
+                <div class="antivirus-details" id="antivirusDetails">
                     <label for="antivirusInput">Antivirus Brand & Version:</label>
-                    <input type="text" id="antivirusInput" placeholder="e.g., XYZ Antivirus v1.2">
+                    <input type="text" id="antivirusInput" placeholder="e.g., McAfee Total Protection v16.0">
                 </div>
             </li>
-            <li><label><input type="checkbox" id="chkUSB"> Installed USB Pratirodh (Controlled removable media usage)</label></li>
-            <li><label><input type="checkbox" id="chkPassword"> Strong Login Password (alphabets/numerals/special chars)</label></li>
-            <li><label><input type="checkbox" id="chkSeparate"> Separate Administrator & User accounts</label></li>
-            <li><label><input type="checkbox" id="chkRemoteDesktop"> Disabled Remote Desktop features</label></li>
-            <li><label><input type="checkbox" id="chkAutorun"> Disabled Auto-run/Auto-play features</label></li>
-            <li><label><input type="checkbox" id="chkFirewall"> Enabled Windows Firewall</label></li>
-            <li><label><input type="checkbox" id="chkFileSharing"> Turned off File & Printer sharing</label></li>
+            <li>
+                <label><input type="checkbox" id="chkUSB"> Installed USB Pratirodh (Controlled removable media usage)</label>
+            </li>
+            <li>
+                <label><input type="checkbox" id="chkPassword"> Strong Login Password (alphabets/numerals/special chars)</label>
+            </li>
+            <li>
+                <label><input type="checkbox" id="chkSeparate"> Separate Administrator & User accounts</label>
+            </li>
+            <li>
+                <label><input type="checkbox" id="chkRemoteDesktop"> Disabled Remote Desktop features</label>
+            </li>
+            <li>
+                <label><input type="checkbox" id="chkAutorun"> Disabled Auto-run/Auto-play features</label>
+            </li>
+            <li>
+                <label><input type="checkbox" id="chkFirewall"> Enabled Windows Firewall</label>
+            </li>
+            <li>
+                <label><input type="checkbox" id="chkFileSharing"> Turned off File & Printer sharing</label>
+            </li>
         </ul>
         
         <h3>Operational Practices</h3>
         <ul class="checkbox-list" id="operationalPractices">
-            <li><label><input type="checkbox" id="chkUpdates"> Periodic check of security updates & patches by IT Champion</label></li>
-            <li><label><input type="checkbox" id="chkNoAdmin"> Non-use of Administrator account for daily work</label></li>
-            <li><label><input type="checkbox" id="chkBackup"> Ensure weekly desktop mail backup using Outlook</label></li>
+            <li>
+                <label><input type="checkbox" id="chkUpdates"> Periodic check of security updates & patches by IT Champion</label>
+            </li>
+            <li>
+                <label><input type="checkbox" id="chkNoAdmin"> Non-use of Administrator account for daily work</label>
+            </li>
+            <li>
+                <label><input type="checkbox" id="chkBackup"> Ensure weekly desktop mail backup using Outlook</label>
+            </li>
         </ul>
         
         <div class="send-hod">
@@ -150,6 +286,8 @@
                 <option value="Head_IT">Head of IT</option>
                 <option value="Head_Security">Head of Security</option>
                 <option value="Head_Admin">Head of Administration</option>
+                <option value="Head_Finance">Head of Finance</option>
+                <option value="Head_HR">Head of HR</option>
             </select>
         </div>
         
@@ -158,63 +296,281 @@
             <input type="text" id="championCode" readonly>
             <label for="championName" style="margin-left: 20px;">Name:</label>
             <input type="text" id="championName" readonly>
+            <label for="championDivision" style="margin-left: 20px;">Division:</label>
+            <input type="text" id="championDivision" readonly>
         </div>
         
-        <button type="submit" id="submitBtn" disabled>Submit</button>
+        <button type="submit" id="submitBtn" disabled>Submit Checklist</button>
         
         <p id="note">Note: The IT Champion must verify the above checklist before the submission of ECNET Application form.</p>
         <p style="text-align: center; font-size: 0.8em; margin-top: 30px;">Information Technology Services Division, ITSD</p>
     </div>
+
     <script>
-        window.onload = function() {
-            // Autofill IT Champion code and name
-            var champCode = document.getElementById('championCode');
-            var champName = document.getElementById('championName');
-            champCode.value = 'ITC12345';
-            champName.value = 'John Doe';
+        // Configuration
+        const API_BASE_URL = 'http://localhost:5024/api';
+        
+        // Get request ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestId = urlParams.get('id') || '1'; // Default to 1 for testing
+        
+        // Global variables
+        let currentRequest = null;
+        let allCheckboxes = [];
+        
+        // DOM elements
+        const elements = {
+            // Request info
+            requestIdSpan: document.getElementById('requestId'),
+            departmentSpan: document.getElementById('department'),
+            requestDateSpan: document.getElementById('requestDate'),
+            requestStatusSpan: document.getElementById('requestStatus'),
             
-            // Elements
-            var antivirusCheckbox = document.getElementById('chkAntivirus');
-            var antivirusInfo = document.getElementById('antivirusInfo');
-            var hodSelect = document.getElementById('hodSelect');
-            var submitBtn = document.getElementById('submitBtn');
+            // Progress and status
+            progressFill: document.getElementById('progressFill'),
+            statusMessage: document.getElementById('statusMessage'),
             
-            // All required checkboxes
-            var requiredCheckboxes = document.querySelectorAll('#configParams input[type="checkbox"], #operationalPractices input[type="checkbox"]');
+            // Form fields
+            buildingSwitchIP: document.getElementById('buildingSwitchIP'),
+            buildingSwitchPort: document.getElementById('buildingSwitchPort'),
+            accessSwitchIP: document.getElementById('accessSwitchIP'),
+            accessSwitchPort: document.getElementById('accessSwitchPort'),
+            ioPort: document.getElementById('ioPort'),
             
-            // Function to check if all required conditions are met
-            function updateSubmitState() {
-                var allChecked = true;
-                requiredCheckboxes.forEach(function(chk) {
-                    if (!chk.checked) {
-                        allChecked = false;
-                    }
-                });
-                var hodSelected = hodSelect.value !== '';
-                submitBtn.disabled = !(allChecked && hodSelected);
-            }
+            // Checkboxes
+            antivirusCheckbox: document.getElementById('chkAntivirus'),
+            antivirusDetails: document.getElementById('antivirusDetails'),
+            antivirusInput: document.getElementById('antivirusInput'),
             
-            // Antivirus checkbox listener
-            antivirusCheckbox.addEventListener('change', function() {
-                if (antivirusCheckbox.checked) {
-                    antivirusInfo.style.display = 'block';
-                } else {
-                    antivirusInfo.style.display = 'none';
-                }
-                updateSubmitState();
-            });
+            // Selection and champion info
+            hodSelect: document.getElementById('hodSelect'),
+            championCode: document.getElementById('championCode'),
+            championName: document.getElementById('championName'),
+            championDivision: document.getElementById('championDivision'),
             
-            // Checkbox listeners
-            requiredCheckboxes.forEach(function(chk) {
-                chk.addEventListener('change', updateSubmitState);
-            });
-            
-            // HOD dropdown listener
-            hodSelect.addEventListener('change', updateSubmitState);
-            
-            // Initial check
-            updateSubmitState();
+            // Submit button
+            submitBtn: document.getElementById('submitBtn')
         };
+
+        // Initialize the page
+        async function initializePage() {
+            try {
+                await loadRequestData();
+                await loadChampionData();
+                setupEventListeners();
+                updateProgress();
+                updateSubmitState();
+            } catch (error) {
+                showMessage('Error initializing page: ' + error.message, 'error');
+            }
+        }
+
+        // Load request data from API
+        async function loadRequestData() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/Request/${requestId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to load request data');
+                }
+                
+                currentRequest = await response.json();
+                
+                // Update request info display
+                elements.requestIdSpan.textContent = currentRequest.id;
+                elements.departmentSpan.textContent = currentRequest.department;
+                elements.requestDateSpan.textContent = new Date(currentRequest.requestDate).toLocaleDateString();
+                elements.requestStatusSpan.textContent = currentRequest.status;
+                
+            } catch (error) {
+                console.error('Error loading request data:', error);
+                showMessage('Failed to load request information', 'error');
+            }
+        }
+
+        // Load champion data (simulate from current request or user session)
+        async function loadChampionData() {
+            // In a real application, this would come from the logged-in user session
+            // For now, we'll use the data from the current request or default values
+            if (currentRequest) {
+                elements.championCode.value = currentRequest.itChampionCode || 'ITC12345';
+                elements.championName.value = currentRequest.itChampionName || 'John Doe';
+                elements.championDivision.value = currentRequest.itChampionDivision || 'Software Division';
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Get all checkboxes
+            allCheckboxes = document.querySelectorAll('#configParams input[type="checkbox"], #operationalPractices input[type="checkbox"]');
+            
+            // Checkbox event listeners
+            allCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    // Update visual state
+                    const listItem = this.closest('li');
+                    if (this.checked) {
+                        listItem.classList.add('checked');
+                    } else {
+                        listItem.classList.remove('checked');
+                    }
+                    
+                    updateProgress();
+                    updateSubmitState();
+                });
+            });
+
+            // Antivirus checkbox special handling
+            elements.antivirusCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    elements.antivirusDetails.style.display = 'block';
+                } else {
+                    elements.antivirusDetails.style.display = 'none';
+                    elements.antivirusInput.value = '';
+                }
+            });
+
+            // HOD selection listener
+            elements.hodSelect.addEventListener('change', updateSubmitState);
+
+            // Form field listeners for validation
+            const textInputs = [
+                elements.buildingSwitchIP,
+                elements.buildingSwitchPort,
+                elements.accessSwitchIP,
+                elements.accessSwitchPort,
+                elements.ioPort
+            ];
+
+            textInputs.forEach(input => {
+                input.addEventListener('input', updateSubmitState);
+            });
+
+            // Submit button listener
+            elements.submitBtn.addEventListener('click', handleSubmit);
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const totalCheckboxes = allCheckboxes.length;
+            const checkedBoxes = Array.from(allCheckboxes).filter(cb => cb.checked).length;
+            const progress = Math.round((checkedBoxes / totalCheckboxes) * 100);
+            
+            elements.progressFill.style.width = progress + '%';
+            elements.progressFill.textContent = progress + '%';
+        }
+
+        // Update submit button state
+        function updateSubmitState() {
+            const allChecked = Array.from(allCheckboxes).every(cb => cb.checked);
+            const hodSelected = elements.hodSelect.value !== '';
+            const networkFieldsFilled = [
+                elements.buildingSwitchIP,
+                elements.buildingSwitchPort,
+                elements.accessSwitchIP,
+                elements.accessSwitchPort,
+                elements.ioPort
+            ].every(field => field.value.trim() !== '');
+            
+            // Check if antivirus details are filled when antivirus is checked
+            const antivirusValid = !elements.antivirusCheckbox.checked || 
+                                 elements.antivirusInput.value.trim() !== '';
+            
+            const canSubmit = allChecked && hodSelected && networkFieldsFilled && antivirusValid;
+            
+            elements.submitBtn.disabled = !canSubmit;
+            
+            if (canSubmit) {
+                elements.submitBtn.textContent = 'Submit Checklist';
+                elements.submitBtn.style.backgroundColor = '#4CAF50';
+            } else {
+                elements.submitBtn.textContent = 'Complete All Fields';
+                elements.submitBtn.style.backgroundColor = '#cccccc';
+            }
+        }
+
+        // Handle form submission
+        async function handleSubmit() {
+            if (elements.submitBtn.disabled) return;
+
+            try {
+                elements.submitBtn.disabled = true;
+                elements.submitBtn.textContent = 'Submitting...';
+                
+                // Collect form data
+                const formData = {
+                    requestId: requestId,
+                    buildingSwitchIP: elements.buildingSwitchIP.value,
+                    buildingSwitchPort: elements.buildingSwitchPort.value,
+                    accessSwitchIP: elements.accessSwitchIP.value,
+                    accessSwitchPort: elements.accessSwitchPort.value,
+                    ioPort: elements.ioPort.value,
+                    configurationChecks: {
+                        legalOS: document.getElementById('chkLegalOS').checked,
+                        antivirus: document.getElementById('chkAntivirus').checked,
+                        antivirusDetails: elements.antivirusInput.value,
+                        usbPratirodh: document.getElementById('chkUSB').checked,
+                        strongPassword: document.getElementById('chkPassword').checked,
+                        separateAccounts: document.getElementById('chkSeparate').checked,
+                        remoteDesktopDisabled: document.getElementById('chkRemoteDesktop').checked,
+                        autorunDisabled: document.getElementById('chkAutorun').checked,
+                        firewallEnabled: document.getElementById('chkFirewall').checked,
+                        fileSharingOff: document.getElementById('chkFileSharing').checked
+                    },
+                    operationalChecks: {
+                        securityUpdates: document.getElementById('chkUpdates').checked,
+                        noAdminUse: document.getElementById('chkNoAdmin').checked,
+                        weeklyBackup: document.getElementById('chkBackup').checked
+                    },
+                    selectedHOD: elements.hodSelect.value,
+                    championCode: elements.championCode.value,
+                    championName: elements.championName.value,
+                    championDivision: elements.championDivision.value,
+                    submissionDate: new Date().toISOString()
+                };
+
+                // Update request status to "Under Review" (simulate API call)
+                const updateResponse = await fetch(`${API_BASE_URL}/Request/${requestId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ Status: 'Under Review' })
+                });
+
+                if (updateResponse.ok) {
+                    showMessage('Checklist submitted successfully! Request status updated to "Under Review".', 'success');
+                    
+                    // Redirect after a delay
+                    setTimeout(() => {
+                        window.location.href = 'it-champion-dashboard.html';
+                    }, 2000);
+                } else {
+                    throw new Error('Failed to update request status');
+                }
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                showMessage('Error submitting checklist: ' + error.message, 'error');
+                elements.submitBtn.disabled = false;
+                elements.submitBtn.textContent = 'Submit Checklist';
+            }
+        }
+
+        // Show status message
+        function showMessage(message, type) {
+            elements.statusMessage.textContent = message;
+            elements.statusMessage.className = `status-message status-${type}`;
+            elements.statusMessage.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    elements.statusMessage.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Initialize page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
     </script>
 </body>
 </html>
